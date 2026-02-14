@@ -17,19 +17,17 @@ module.exports = {
 const executor = interaction.member;
 
 const adminRoleId = config.adminRoleId;
+const modRoleId = config.modRoleId;
 
-// Seperate Role check
-if (interaction.user.id !== config.modRoleId) {
+// Role check
+const hasModRole = executor.roles.cache.has(modRoleId);
+const hasAdminRole = executor.roles.cache.has(adminRoleId);
 
-  const hasModRole = executor.roles.cache.has(modRoleId);
-  const hasAdminRole = executor.roles.cache.has(adminRoleId);
-
-  if (!hasModRole && !hasAdminRole) {
-    return interaction.reply({
-      content: "❌ You are not allowed to execute this command.",
-      ephemeral: true
-    });
-  }
+if (!hasModRole && !hasAdminRole) {
+  return interaction.reply({
+    content: "❌ You are not allowed to execute this command.",
+    ephemeral: true
+  });
 }
 
     const channel = interaction.channel;
@@ -43,7 +41,6 @@ if (interaction.user.id !== config.modRoleId) {
     }
 
  const guild = interaction.guild;
-const modRoleId = config.modRoleId;
 
 const creatorOverwrite = channel.permissionOverwrites.cache.find(overwrite => {
   return (
