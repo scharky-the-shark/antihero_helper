@@ -42,6 +42,13 @@ if (interaction.user.id !== config.ownerUserId) {
     const hours = interaction.options.getInteger("hours");
     const reason = interaction.options.getString("reason");
 
+    if (hours < 1 || hours > 672) {
+      return interaction.reply({
+        content: "❌ Hours must be between 1 and 672 (28 days). Discord does not support longer timeouts.",
+        ephemeral: true
+      });
+    }
+
     await target.timeout(hours * 60 * 60 * 1000, reason);
 
     const userData = getUser(target.id);
