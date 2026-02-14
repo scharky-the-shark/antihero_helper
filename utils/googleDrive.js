@@ -8,7 +8,7 @@ const oAuth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_REDIRECT_URI
 );
 
-const tokenPath = path.join(__dirname, "..", "token.json");
+const tokenPath = process.env.GOOGLE_TOKEN_PATH || path.join(__dirname, "..", "token.json");
 
 try {
   const tokenData = JSON.parse(fs.readFileSync(tokenPath, "utf8"));
