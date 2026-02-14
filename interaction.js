@@ -108,7 +108,8 @@ if (interaction.customId === "nomail_yes") {
   ];
 
   // Support-Rollen erlauben
-  for (const roleId of config.adminRoleId || []) {
+  const adminRoles = Array.isArray(config.adminRoleId) ? config.adminRoleId : [config.adminRoleId];
+  for (const roleId of adminRoles) {
     overwrites.push({
       id: roleId,
       allow: [
