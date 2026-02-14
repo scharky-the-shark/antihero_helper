@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { getUser, updateUser } = require("./utils/userStore");
 const config = require("./Login.json");
 
@@ -11,7 +11,8 @@ module.exports = {
     )
     .addStringOption(option =>
       option.setName("reason").setDescription("Reason").setRequired(true)
-    ),
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
 
   async execute(interaction) {
 
