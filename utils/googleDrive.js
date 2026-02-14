@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const { google } = require("googleapis");
 
 const oAuth2Client = new google.auth.OAuth2(
@@ -7,9 +8,15 @@ const oAuth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_REDIRECT_URI
 );
 
-oAuth2Client.setCredentials(
-  JSON.parse(fs.readFileSync("token.json", "utf8"))
-);
+const tokenPath = path.join(__dirname, "..", "token.json");
+
+try {
+  const tokenData = JSON.parse(fs.readFileSync(tokenPath, "utf8"));
+  oAuth2Client.setCredentials(tokenData);
+} catch (err) {
+  console.error(`[googleDrive] Failed to load token.json: ${err.message}`);
+  console.error("[googleDrive] Google Drive uploads will not work until token.json is provided.");
+}
 
 const drive = google.drive({
   version: "v3",
