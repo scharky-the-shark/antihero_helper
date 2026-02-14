@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { REST, Routes } = require("discord.js");
 const config = require("./Login.json");
 
@@ -9,15 +10,15 @@ const banCmd = require("./ban");
 const timeoutCmd = require("./timeout");
 const infoCmd = require("./info");
 
-const rest = new REST({ version: "10" }).setToken(config.token);
+const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
   try {
 
     await rest.put(
       Routes.applicationGuildCommands(
-        config.clientId,
-        config.guildId
+        process.env.DISCORD_CLIENT_ID,
+        process.env.DISCORD_GUILD_ID
       ),
       {
         body: [

@@ -1,8 +1,4 @@
 {
-  "guildId": "***",
-  "clientId": "***",
-  "token": ***",
-
   "ownerUserId": "1280882903567568922",
   "allowedUserIds": [
     "1444350799814594631",
@@ -14,8 +10,7 @@
       "1444350799814594631",
       "1423723349833420900"
     ],
-    "cooldownHours": 12,
-    "googleDriveFolderId": "***"
+    "cooldownHours": 12
   },
 
   "logging": {

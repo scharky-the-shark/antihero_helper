@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
 const config = require("./Login.json");
 
@@ -74,4 +75,4 @@ client.on("interactionCreate", async (interaction) => {
 
 });
 
-client.login(config.token);
+client.login(process.env.DISCORD_TOKEN);
