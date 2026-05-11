@@ -5,17 +5,8 @@ const configPath = path.join(__dirname, "../logs/automod.json");
 const MOD_ALERT_CHANNEL = "1480664417044533268";
 const MOD = "1374674313801629727";
 
-function normalize(text) {
-    return text
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "")  // removes spaces & symbols
-        .replace(/5/g, "s")
-        .replace(/4/g, "a")
-        .replace(/3/g, "e")
-        .replace(/1/g, "i")
-        .replace(/1/g, "l")
-        .replace(/0/g, "o");
-}
+const normalize = require("./normalize");
+
 
 module.exports = async function automod(message, client) {
 
