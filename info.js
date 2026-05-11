@@ -1,38 +1,42 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { getUser } = require("./utils/userStore");
-const config = require("./Login.json");
+const { getConfig } = require("./utils/configManager"); // 🔄 BEARBEITET (statt require("./Login.json"))
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("info")
     .setDescription("Get moderation info about a user")
     .addUserOption(option =>
-      option.setName("user").setDescription("User").setRequired(true)
+      option.setName("user")
+        .setDescription("The user to get info about")
+        .setRequired(true)
     ),
 
   async execute(interaction) {
-//ROLE CHECK
-const executor = interaction.member;
 
-const modRoleId = config.modRoleId;
-const adminRoleId = config.adminRoleId;
+    const config = getConfig(); // 🔄 BEARBEITET (Live-Config laden)
 
-// Owner Role
-if (interaction.user.id !== config.ownerUserId) {
+    const executor = interaction.member;
 
-  const hasModRole = executor.roles.cache.has(modRoleId);
-  const hasAdminRole = executor.roles.cache.has(adminRoleId);
+    const modRoleId = config.modRoleId;       // 🔄 BEARBEITET
+    const adminRoleId = config.adminRoleId;   // 🔄 BEARBEITET
 
-  if (!hasModRole && !hasAdminRole) {
-    return interaction.reply({
-      content: "❌ You are not allowed to execute this command.\nYou will be soon able to access your collected informtions",
-      ephemeral: true
-    });
-  }
-}
+    // 🔄 BEARBEITET — Live Role Check + Owner Check
+    if (interaction.user.id !== config.ownerUserId) {
+
+      const hasModRole = executor.roles.cache.has(modRoleId);
+      const hasAdminRole = executor.roles.cache.has(adminRoleId);
+
+      if (!hasModRole && !hasAdminRole) {
+        return interaction.reply({
+          content: "❌ You are not allowed to execute this command.",
+          ephemeral: true
+        });
+      }
+    }
 
     const target = interaction.options.getUser("user");
-    const userData = getUser(target.id);
+    const userData = getUser(target);
 
     const warnList = userData.warnings.length > 0
       ? userData.warnings.map((w, i) =>
@@ -53,13 +57,13 @@ if (interaction.user.id !== config.ownerUserId) {
       : "None";
 
     const embed = new EmbedBuilder()
-      .setTitle(`Moderationsinfo: ${target.tag}`)
+      .setTitle(`Moderation actions for: ${target.tag}`)
       .addFields(
         { name: "Warnings", value: `${userData.warnings.length}`, inline: true },
-        { name: "Timeouts", value: `${userData.timeouts.length}`, inline: true },
-        { name: "Bans", value: `${userData.bans.length}`, inline: true },
         { name: "Warn-reasons", value: warnList },
+        { name: "Timeouts", value: `${userData.timeouts.length}`, inline: true },
         { name: "Timeout-reasons", value: timeoutList },
+        { name: "Bans", value: `${userData.bans.length}`, inline: true },
         { name: "Ban-reason", value: banList }
       )
       .setThumbnail(target.displayAvatarURL())
@@ -71,3 +75,4 @@ if (interaction.user.id !== config.ownerUserId) {
     });
   }
 };
+

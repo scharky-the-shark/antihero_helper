@@ -13,7 +13,20 @@ const config = require("./Login.json");
 module.exports = async (interaction) => {
 
   if (!interaction.isButton()) return;
+  /* -------------------------------
+     RULES
+  --------------------------------*/
+if (interaction.customId === "faq_rules") {
 
+    return interaction.reply({
+      ephemeral: true,
+      content:
+        "**Codex of Rule for all Antiheros**\n\n" +
+        ">>> 1. [TOS Antihero Studios](<https://www.antiherostudios.com/terms>)\n" +
+        "2. [Discord TOS](<https://discord.com/terms>)\n" +
+        "3. [Serverrules](https://discord.com/channels/1296481397674082374/1338819041048924251)"
+    });
+  }
   /* -------------------------------
      HOW TO DOWNLOAD
   --------------------------------*/
@@ -23,10 +36,10 @@ module.exports = async (interaction) => {
       ephemeral: true,
       content:
         "**How can I download the game?**\n\n" +
-        "1. Register on the [official website](https://www.antiherostudios.com/?creatorCode=SCHARKY).\n" +
+        "1. Register on the [official website](<https://www.antiherostudios.com/?creatorCode=SCHARKY>).\n" +
         "2. Wait until your registration confirmed with an automatic email.\n" +
-        "3. After confirmation, you will receive a few hours later your download link by email.\n\n" +
-        "New players are added daily. Please be **PATIENT**."
+        "3. After confirmation, you will receive a few days later your download link by email.\n\n" +
+        "### Note: The game is currently only for ctreators only."
     });
   }
 
@@ -63,8 +76,8 @@ module.exports = async (interaction) => {
 
     return interaction.reply({
       ephemeral: true,
-      content: "**Did you wait at least 24 hours after signing up?**",
-      components: [row]
+      content: "**The game is currently only for creators available!**",
+      //components: [row]
     });
   }
 
@@ -77,70 +90,11 @@ module.exports = async (interaction) => {
       components: [],
       content:
         "Please wait a little longer.\n" +
-        "New players are added daily and emails are sent in batches."
+        "Emails are sent in batches and direct before playtest start."
     });
   }
 
-  /* -------------------------------
-     NO MAIL – YES -> CREATE TICKET
-  --------------------------------*/
-if (interaction.customId === "nomail_yes") {
-
-  const guild = interaction.guild;
-
-  const username = interaction.user.username
-    .toLowerCase()
-    .replace(/[^a-z0-9]/gi, "");
-
-  const overwrites = [
-    {
-      id: guild.roles.everyone.id,
-      deny: [PermissionsBitField.Flags.ViewChannel]
-    },
-    {
-      id: interaction.user.id,
-      allow: [
-        PermissionsBitField.Flags.ViewChannel,
-        PermissionsBitField.Flags.SendMessages,
-        PermissionsBitField.Flags.ReadMessageHistory
-      ]
-    }
-  ];
-
-  // Support-Rollen erlauben
-  for (const roleId of config.adminRoleId || []) {
-    overwrites.push({
-      id: roleId,
-      allow: [
-        PermissionsBitField.Flags.ViewChannel,
-        PermissionsBitField.Flags.SendMessages,
-        PermissionsBitField.Flags.ReadMessageHistory
-      ]
-    });
-  }
-
-  const channel = await guild.channels.create({
-    name: `no-mail-${username}`,
-    type: ChannelType.GuildText,
-    parent: config.ticketCategoryId,
-    permissionOverwrites: overwrites
-  });
-
-  await channel.send(
-    "**No download mail – Ticket**\n\n" +
-    "Please provide the following information:\n" +
-    "- Your registration email address\n" +
-    "- Your platform (iOS or Android)"
-  );
-
-  return interaction.update({
-    components: [],
-    content: `Your ticket has been created: ${channel}`
-  });
-}
-
-
-  /* -------------------------------
+    /* -------------------------------
      BUG REPORT
   --------------------------------*/
   if (interaction.customId === "faq_bugs") {
@@ -172,9 +126,7 @@ if (interaction.customId === "nomail_yes") {
         "2. Did you receive a confirmation email?\n" +
         "3. Did you check your spam folder?\n\n" +
         "**Can I change my password later?**\n" +
-        "Yes. After your first login using the one-time  password, you must set your own password.\n\n" +
-        "**I received an email but there is no password**\n" +
-        "This is a known issue. As soon as it is fixed, a new email containing your one-time password will be sent automatically."
+        "Yes. After your first login using the one-time  password, you must set your own password." 
     });
   }
 
@@ -200,10 +152,221 @@ if (interaction.customId === "nomail_yes") {
   }
 
 
+
+/* -------------------------------
+     MISFITZ ROLES
+  --------------------------------*/
+if (interaction.customId === "faq_roles") {
+
+    const embed1 = new EmbedBuilder()
+        .setTitle("The Team")
+        .setColor(0xF0A503)
+        .setDescription(
+`<@&1296482531734196254>
+These are the head of the server with administration rights.
+
+<@&1319627381941600256>
+Official members of *Antihero Studios*
+- Impersonating them [to damage the brand in any way] is strictly forbidden.`
+        );
+
+    const embed2 = new EmbedBuilder()
+        .setTitle("Moderators")
+        .setColor(0x9D1727)
+        .setDescription(
+`<@&1374674313801629727>
+- moderators of the server to keep chats clean and assist you solve common issues
+- Ping them if you see something rule breaking
+- **DO NOT PING THEM FOR ROLES**`
+        );
+
+    const embed3 = new EmbedBuilder()
+        .setTitle("Creators")
+        .setColor(0x01F9A3)
+        .setDescription(
+`<@&1397876586136604783>
+- Exclusive Creators of the brand who get early access to updates
+- Requires regular uploads & being accepted in the Creator Program
+
+<@&1346459828138147860>
+- Trusted Antihero Creators
+- doing content for Antihero Studios
+- being accepted in the program won't give you the role automatically
+- given to approved creators`
+        );
+
+    const embed4 = new EmbedBuilder()
+        .setTitle("Special Roles")
+        .setColor(0xFFFF00)
+        .setDescription(
+`<@&1470005111336997109> <@&1425859596282761236>
+- are players who took much effort to collect all relics
+
+<@&1350882077226303650> <@&1379404108972163173> <@&1398681785881071808>
+- players compete against each other in Misfitz finishing in the top 10
+
+<@&1379406326446297299> <@&1376157375286739014> <@&1425791750001393746> <@&1398681335089860790>
+- Top 3 players in these playtest on the leaderboard`
+        );
+
+const embed5 = new EmbedBuilder()
+        .setTitle("Modmail Bot")
+        .setColor(0x000000)
+        .setDescription(`<@1469339506942545981>
+- Not a role but a bot
+- will DM you if mod actions has been taking against you
+- Providing answers to common questions
+- modmailing tool
+- powered by <@1280882903567568922>`
+        );
+
+    await interaction.reply({
+        embeds: [embed1, embed2, embed3, embed4, embed5],
+        ephemeral: true // kannst du entfernen, wenn es öffentlich sein soll
+    });
+}
+
+
+  /* -------------------------------
+     NO MAIL – YES -> CREATE TICKET
+  --------------------------------*/
+if (interaction.customId === "nomail_yes") {
+
+    const cRoleId = "1346459828138147860"
+    
+    // 🔄 BEARBEITET — Live Role Check + Owner Check
+    if (interaction.user.id !== adminRoleId) {
+
+      const hascRole = executor.roles.cache.has(cRoleId);
+
+      if (!hascRole) {
+        return interaction.reply({
+          content: "❌ You are not allowed to execute this command.",
+          ephemeral: true
+        });
+      }
+    }
+
+  const guild = interaction.guild;
+
+  const username = interaction.user.username
+    .toLowerCase()
+    .replace(/[^a-z0-9]/gi, "");
+
+  const overwrites = [
+  {
+    id: guild.roles.everyone.id,
+    deny: [PermissionsBitField.Flags.ViewChannel]
+  },
+  {
+    id: interaction.user.id,
+    allow: [
+      PermissionsBitField.Flags.ViewChannel,
+      PermissionsBitField.Flags.SendMessages,
+      PermissionsBitField.Flags.ReadMessageHistory
+    ]
+  },
+  {
+    id: config.adminRoleId,
+    allow: [
+      PermissionsBitField.Flags.ViewChannel,
+      PermissionsBitField.Flags.SendMessages,
+      PermissionsBitField.Flags.ReadMessageHistory
+    ]
+  },
+  {
+    id: config.supportRoleId,
+    allow: [
+      PermissionsBitField.Flags.ViewChannel,
+      PermissionsBitField.Flags.SendMessages,
+      PermissionsBitField.Flags.ReadMessageHistory
+    ]
+  },
+  {
+    id: guild.members.me.id, // BOT
+    allow: [
+      PermissionsBitField.Flags.ViewChannel,
+      PermissionsBitField.Flags.SendMessages,
+      PermissionsBitField.Flags.ReadMessageHistory,
+      PermissionsBitField.Flags.ManageChannels
+    ]
+  }
+];
+
+
+  overwrites.push({
+  id: config.adminRoleId,
+  allow: [
+    PermissionsBitField.Flags.ViewChannel,
+    PermissionsBitField.Flags.SendMessages,
+    PermissionsBitField.Flags.ReadMessageHistory
+  ]
+});
+
+
+
+
+  const channel = await guild.channels.create({
+    name: `no-mail-${username}`,
+    type: ChannelType.GuildText,
+    parent: config.ticketCategoryId,
+    permissionOverwrites: overwrites
+  });
+
+await channel.send({
+  content:
+    `**No download mail – Ticket**\n\n` +
+    `Please provide the following information <@${interaction.user.id}> :\n` +
+    `- Your registration email address\n` +
+    `- Your platform (iOS or Android)`,
+  allowedMentions: { users: [interaction.user.id] }
+});
+
+  return interaction.update({
+    components: [],
+    content: `Your ticket has been created: ${channel}`
+  });
+}
+
 /* -------------------------------
    MODMAIL TICKET
 --------------------------------*/
-if (interaction.customId === "modmail_ticket") {
+
+  /* -------------------------------
+     NO MAIL – QUESTION 1
+  --------------------------------*/
+  if (interaction.customId === "modmail_ticket") {
+
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId("modmail_ticket_open")
+        .setLabel("Yes")
+        .setStyle(ButtonStyle.Success),
+      new ButtonBuilder()
+        .setCustomId("modmail_ticket_cancel")
+        .setLabel("Cancel")
+        .setStyle(ButtonStyle.Danger)
+    );
+
+    return interaction.reply({
+      ephemeral: true,
+      content: "**Are you sure that you want to create a ticket?**",
+      components: [row]
+    });
+  }
+
+  /* -------------------------------
+     NO MAIL – NO
+  --------------------------------*/
+  if (interaction.customId === "modmail_ticket_cancel") {
+
+    return interaction.update({
+      components: [],
+      content:
+        "No ticket opened.\n"});
+  }
+
+if (interaction.customId === "modmail_ticket_open") {
 
   const guild = interaction.guild;
   const member = interaction.member;
@@ -232,43 +395,44 @@ if (interaction.customId === "modmail_ticket") {
     type: ChannelType.GuildText,
     parent: categoryId,
     permissionOverwrites: [
-      {
-        id: guild.roles.everyone.id,
-        deny: [PermissionsBitField.Flags.ViewChannel]
-      },
-      {
-        id: member.id,
-        allow: [
-          PermissionsBitField.Flags.ViewChannel,
-          PermissionsBitField.Flags.SendMessages,
-          PermissionsBitField.Flags.ReadMessageHistory
-        ]
-      },
-      {
-        id: modRoleId,
-        allow: [
-          PermissionsBitField.Flags.ViewChannel,
-          PermissionsBitField.Flags.SendMessages,
-          PermissionsBitField.Flags.ReadMessageHistory
-        ]
-      }
+  {
+    id: guild.roles.everyone.id,
+    deny: [PermissionsBitField.Flags.ViewChannel]
+  },
+  {
+    id: member.id,
+    allow: [
+      PermissionsBitField.Flags.ViewChannel,
+      PermissionsBitField.Flags.SendMessages,
+      PermissionsBitField.Flags.ReadMessageHistory
     ]
+  },
+  {
+    id: modRoleId,
+    allow: [
+      PermissionsBitField.Flags.ViewChannel,
+      PermissionsBitField.Flags.SendMessages,
+      PermissionsBitField.Flags.ReadMessageHistory
+    ]
+  },
+  {
+    id: guild.members.me.id, // BOT
+    allow: [
+      PermissionsBitField.Flags.ViewChannel,
+      PermissionsBitField.Flags.SendMessages,
+      PermissionsBitField.Flags.ReadMessageHistory,
+      PermissionsBitField.Flags.ManageChannels
+    ]
+  }
+]
+
   });
 
-  const embed = new EmbedBuilder()
-    .setTitle("📨 New ModMail Ticket")
-    .addFields(
-      { name: "User", value: `${member.user.tag}`, inline: true },
-      { name: "User ID", value: `${member.id}`, inline: true },
-      { name: "Please enter your mail now", inline: true }
-    )
-    .setColor(0x2b2d31)
-    .setTimestamp();
+  await ticketChannel.send(
+    "**Modmail – Ticket**\n\n" +
+    `<@&${modRoleId}>! ${member} Please enter your message, a Mod will assist you shortly`
+    );
 
-  await ticketChannel.send({
-    content: `<@&${modRoleId}> ${member}`,
-    embeds: [embed]
-  });
 
   return interaction.reply({
     content: `📨 Your ticket has been created: ${ticketChannel}`,
