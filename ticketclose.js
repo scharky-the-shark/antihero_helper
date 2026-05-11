@@ -13,13 +13,14 @@ module.exports = {
     .setDescription("Close the current ticket"),
 
   async execute(interaction) {
-//ROLE CHECK
+// ROLE CHECK
 const executor = interaction.member;
 
+const modRoleId = config.modRoleId;
 const adminRoleId = config.adminRoleId;
 
-// Seperate Role check
-if (interaction.user.id !== config.modRoleId) {
+// Role Check
+if (interaction.user.id !== config.ownerUserId) {
 
   const hasModRole = executor.roles.cache.has(modRoleId);
   const hasAdminRole = executor.roles.cache.has(adminRoleId);
@@ -32,6 +33,7 @@ if (interaction.user.id !== config.modRoleId) {
   }
 }
 
+
     const channel = interaction.channel;
 
     // Only in ticket category allowed
@@ -43,7 +45,6 @@ if (interaction.user.id !== config.modRoleId) {
     }
 
  const guild = interaction.guild;
-const modRoleId = config.modRoleId;
 
 const creatorOverwrite = channel.permissionOverwrites.cache.find(overwrite => {
   return (
@@ -87,7 +88,7 @@ await channel.permissionOverwrites.delete(creatorId).catch(() => {});
     );
 
     await interaction.reply({
-      content: "🔒 Ticket closed. Press the button below to delete it or to export it.",
+      content: "🔒 Ticket closed. Press the button below to delete it or to export it to the dashboard.",
       components: [row]
     });
 

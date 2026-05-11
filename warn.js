@@ -11,9 +11,8 @@ module.exports = {
     )
     .addStringOption(option =>
       option.setName("reason").setDescription("Reason").setRequired(true)
-    )
-    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
-
+    ),
+    
   async execute(interaction) {
 //ROLE CHECK
 const executor = interaction.member;
@@ -38,7 +37,7 @@ if (interaction.user.id !== config.ownerUserId) {
     const target = interaction.options.getUser("user");
     const reason = interaction.options.getString("reason");
 
-    const userData = getUser(target.id);
+    const userData = getUser(target);
 
     userData.warnings.push({
       reason,
@@ -59,9 +58,42 @@ if (interaction.user.id !== config.ownerUserId) {
       const categoryId = require("./Login.json").ticketCategoryId;
 
       const channel = await guild.channels.create({
-        name: `modmail-${target.username}`,
-        parent: categoryId
-      });
+  name: `warnstrike-${target.username.toLowerCase().replace(/[^a-z0-9]/gi, "")}`,
+  parent: categoryId,
+  permissionOverwrites: [
+    {
+      id: guild.roles.everyone.id,
+      deny: [PermissionFlagsBits.ViewChannel]
+    },
+    {
+      id: target.id,
+      allow: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.ReadMessageHistory
+      ],
+      deny: [
+        PermissionFlagsBits.SendMessages
+      ]
+    },
+    {
+      id: config.modRoleId,
+      allow: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.ReadMessageHistory
+      ]
+    },
+    {
+      id: config.adminRoleId,
+      allow: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.ReadMessageHistory
+      ]
+    }
+  ]
+});
+
 
       await channel.send(
         `<@${target.id}> ⚠️ You have been warned.\nReason: ${reason}`
