@@ -125,9 +125,7 @@ client.once("ready", () => {
 
   console.log(`Logged in as ${client.user.tag}`);
 });
-client.once("ready", () => {
-  log(`Bot gestartet als ${client.user.tag}`);
-});
+
 
 
 // on Interactions

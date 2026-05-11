@@ -1,11 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const { getUser } = require("./utils/userStore");
-const { getConfig } = require("./utils/configManager"); // 🔄 BEARBEITET (statt require("./Login.json"))
-
+const { getConfig } = require("./utils/configManager"); 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("info")
     .setDescription("Get moderation info about a user")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addUserOption(option =>
       option.setName("user")
         .setDescription("The user to get info about")
@@ -14,12 +14,12 @@ module.exports = {
 
   async execute(interaction) {
 
-    const config = getConfig(); // 🔄 BEARBEITET (Live-Config laden)
+    const config = getConfig(); 
 
     const executor = interaction.member;
 
-    const modRoleId = config.modRoleId;       // 🔄 BEARBEITET
-    const adminRoleId = config.adminRoleId;   // 🔄 BEARBEITET
+    const modRoleId = config.modRoleId;       
+    const adminRoleId = config.adminRoleId;  
 
     // 🔄 BEARBEITET — Live Role Check + Owner Check
     if (interaction.user.id !== config.ownerUserId) {

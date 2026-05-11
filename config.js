@@ -6,6 +6,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("config")
     .setDescription("Change bot configuration")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addStringOption(option =>
       option.setName("field")
         .setDescription("Field to change")

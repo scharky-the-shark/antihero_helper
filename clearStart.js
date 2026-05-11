@@ -1,5 +1,6 @@
 const {
-  SlashCommandBuilder
+  SlashCommandBuilder,
+  PermissionFlagsBits
 } = require("discord.js");
 
 const { getConfig } = require("./utils/configManager");
@@ -7,6 +8,7 @@ const { getConfig } = require("./utils/configManager");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("clearstart")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setDescription("Deletes the last message in the configured start channel (Owner only)"),
 
   async execute(interaction) {

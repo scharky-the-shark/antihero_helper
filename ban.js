@@ -1,11 +1,12 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { getUser, updateUser } = require("./utils/userStore");
 const config = require("./Login.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("ban")
+    .setName("nuke")
     .setDescription("Ban a user and delete last 7 days of messages")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addUserOption(option =>
       option.setName("user").setDescription("User").setRequired(true)
     )

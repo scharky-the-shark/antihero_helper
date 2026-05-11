@@ -6,6 +6,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("mute")
     .setDescription("Timeout a user in hours")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addUserOption(option =>
       option.setName("user").setDescription("User").setRequired(true)
     )

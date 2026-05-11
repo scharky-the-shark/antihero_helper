@@ -2,7 +2,8 @@ const {
   SlashCommandBuilder,
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonStyle
+  ButtonStyle,
+  PermissionFlagsBits
 } = require("discord.js");
 
 const config = require("./Login.json");
@@ -10,6 +11,7 @@ const config = require("./Login.json");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("ticketclose")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setDescription("Close the current ticket"),
 
   async execute(interaction) {

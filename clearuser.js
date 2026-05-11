@@ -1,10 +1,11 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const config = require("./Login.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("clearuser")
     .setDescription("Delete messages from a specific user")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addUserOption(option =>
       option.setName("user").setDescription("User").setRequired(true)
     )

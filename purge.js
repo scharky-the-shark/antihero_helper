@@ -1,9 +1,10 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const config = require("./Login.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("purge")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setDescription("Delete last 100 messages in this channel"),
 
   async execute(interaction) {

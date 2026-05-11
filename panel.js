@@ -2,7 +2,8 @@ const {
   SlashCommandBuilder,
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonStyle
+  ButtonStyle,
+  PermissionFlagsBits
 } = require("discord.js");
 
 const { getConfig } = require("./utils/configManager"); // 🔄 BEARBEITET (statt require("./Login.json"))
@@ -10,6 +11,7 @@ const { getConfig } = require("./utils/configManager"); // 🔄 BEARBEITET (stat
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("panel")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setDescription("Send the FAQ panel"),
 
   async execute(interaction) {

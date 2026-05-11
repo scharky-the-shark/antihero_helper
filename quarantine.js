@@ -1,9 +1,10 @@
-const { SlashCommandBuilder, ChannelType } = require("discord.js");
+const { SlashCommandBuilder, ChannelType, PermissionFlagsBits } = require("discord.js");
 const config = require("./Login.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("quarantine")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setDescription("Timeout a user for 7 days and delete recent messages")
     .addUserOption(option =>
       option.setName("user").setDescription("User").setRequired(true)

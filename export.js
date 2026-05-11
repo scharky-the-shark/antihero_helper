@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const config = require("./Login.json");
 const { exportAllLogs } = require("./utils/exportLogs");
 const { checkCooldown, setCooldown } = require("./utils/cooldown");
@@ -6,7 +6,8 @@ const { checkCooldown, setCooldown } = require("./utils/cooldown");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("export")
-    .setDescription("Export all logs to Google Drive"),
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
+    .setDescription("Export all logs to the Dashboard"),
 
   async execute(interaction) {
 
