@@ -90,7 +90,7 @@ await channel.permissionOverwrites.delete(creatorId).catch(() => {});
     );
 
     await interaction.reply({
-      content: "🔒 Ticket closed. Press the button below to delete it or to export it to the dashboard.",
+      content: "🔒 Ticket closed. Press the button below to delete it ~~or to export it to the dashboard~~.",
       components: [row]
     });
 

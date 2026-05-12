@@ -1,7 +1,7 @@
 const { Client, GatewayIntentBits, Collection } = require("discord.js");
 const config              = require("./Login.json");
 
-const panelCommand        = require("./panel");
+const panelCommand        = require("./panelUpdate.js");
 const exportCommand       = require("./export");
 const ticketCloseCommand  = require("./ticketclose");
 const warnCommand         = require("./warn");
