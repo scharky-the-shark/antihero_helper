@@ -30,7 +30,7 @@ module.exports = {
 if (suspicious) {
 
     await sendModLog(client,
-`🚨 Suspicious Message Edit
+`Suspicious Message Edit
 
 User: <@${newMessage.author.id}>
 Channel: <#${newMessage.channel.id}>

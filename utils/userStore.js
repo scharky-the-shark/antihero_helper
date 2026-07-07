@@ -26,11 +26,6 @@ function getUser(user) {
       bans: []
     };
   } else {
-    // 🔄 Username automatisch aktualisieren wenn geändert
-    if (username && data[userId].username !== username) {
-      data[userId].username = username;
-    }
-
     if (tag && data[userId].tag !== tag) {
       data[userId].tag = tag;
     }
