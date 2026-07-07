@@ -19,7 +19,7 @@ module.exports = {
 const executor = interaction.member;
 
 const modRoleId = config.modRoleId;
-const adminRoleId = config.adminRoleId;
+const adminRoleId = config.supportRoleId;
 
 // Role Check
 if (interaction.user.id !== config.ownerUserId) {

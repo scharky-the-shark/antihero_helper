@@ -106,18 +106,14 @@ module.exports = {
       new ButtonBuilder()
         .setCustomId("modmail_ticket")
         .setLabel("Modmail")
-        .setStyle(ButtonStyle.Danger),
+        .setStyle(ButtonStyle.Success),
 
       new ButtonBuilder()
         .setCustomId("faq_nomail")
-        .setLabel("No download mail received!")
-        .setStyle(ButtonStyle.Danger),
+        .setLabel("No access!")
+        .setStyle(ButtonStyle.Success),
       
-      new ButtonBuilder()
-        .setCustomId("faq_chatbot")
-        .setLabel("Open Chatbot")
-        .setStyle(ButtonStyle.Danger)
-        .setDisabled(true)
+
     );
 
     // ─────────────────────────────
@@ -149,13 +145,11 @@ module.exports = {
 
       await message.edit({
         content:
-          "# Antihero – Help & FAQ Panel\n\n" +
-          "Click one of the buttons below to get an answer.",
+          "# Antihero – Support\n\n" +
+          "Click one of the buttons below to help.",
         components: [
           rules,
-          row_faq,
           row_bug,
-          row_creator,
           row_mod
         ]
       });
