@@ -14,6 +14,8 @@ const quarantineCmd   = require("./quarantine");
 const purgeCmd        = require("./purge");
 const clearuserCmd    = require("./clearuser");
 const blockCmd        = require("./block");
+const resolveCmd      = require("./resolve");
+const statsCommand    = require("./stats");
 
 const rest = new REST({ version: "10" }).setToken(config.token);
 
@@ -40,14 +42,16 @@ const rest = new REST({ version: "10" }).setToken(config.token);
           quarantineCmd.data.toJSON(),
           purgeCmd.data.toJSON(),
           clearuserCmd.data.toJSON(),
-          blockCmd.data.toJSON()
+          blockCmd.data.toJSON(),
+          resolveCmd.data.toJSON(),
+          statsCommand.data.toJSON(),
         ]
       }
     );
-
-    console.log("✅ Commands registered successfully.");
+    console.log("============ SUCCESS ============");
+    console.log("Commands registered successfully.");
 
   } catch (error) {
-    console.error("❌ Command registration failed:", error);
+    console.error("Command registration failed:", error);
   }
 })();

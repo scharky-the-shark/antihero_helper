@@ -5,14 +5,6 @@ module.exports = async (interaction) => {
     if (!interaction.isButton()) return;
 
     // FAQ
-    const faqRules = require("./interactions/faq/rules");
-    const faqDownload = require("./interactions/faq/download");
-    const faqCountry = require("./interactions/faq/country");
-    const faqBugs = require("./interactions/faq/bugs");
-    const faqCreator = require("./interactions/faq/creatorDashboard");
-    const faqContent = require("./interactions/faq/createContent");
-    const faqRoles = require("./interactions/faq/roles");
-
     // NO MAIL
     const noMail = require("./interactions/tickets/noMail");
     const noMailYes = require("./interactions/tickets/noMailYes");
@@ -23,8 +15,21 @@ module.exports = async (interaction) => {
     const modmailOpen = require("./interactions/tickets/modmailOpen");
     const modmailCancel = require("./interactions/tickets/modmailCancel");
 
+    // COLLECTION
+    const collection = require("./interactions/tickets/collection");
+    const collectionOpen = require("./interactions/tickets/modmailCollectorOpen");
+
     // DELETE
     const deleteTicket = require("./interactions/tickets/deleteTicket");
+
+    const faqRules = require("./interactions/faq/rules");
+    const faqRoles = require("./interactions/faq/roles");
+    
+    const faqDownload = require("./interactions/faq/download");
+    const faqCountry = require("./interactions/faq/country");
+    const faqBugs = require("./interactions/faq/bugs");
+    const faqCreator = require("./interactions/faq/creatorDashboard");
+    const faqContent = require("./interactions/faq/createContent");
 
     switch (interaction.customId) {
 
@@ -61,6 +66,12 @@ module.exports = async (interaction) => {
       case "modmail_ticket":
         return modmail(interaction);
 
+      case "modmail_collection":
+        return collection(interaction);
+        
+      case "modmail_collector":
+        return collectionOpen(interaction);
+
       case "modmail_ticket_open":
         return modmailOpen(interaction);
 
@@ -81,7 +92,7 @@ module.exports = async (interaction) => {
       if (!interaction.replied && !interaction.deferred) {
 
         await interaction.reply({
-          content: "❌ Interaction failed.",
+          content: "âŒ Interaction failed.",
           ephemeral: true
         });
       }
