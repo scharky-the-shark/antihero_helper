@@ -1,12 +1,20 @@
+// DEACTIVATED
+// DEACTIVATED
+// DEACTIVATED
+// DEACTIVATED
+// DEACTIVATED
+// DEACTIVATED
+
 const {
   SlashCommandBuilder,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  EmbedBuilder,
   PermissionFlagsBits
 } = require("discord.js");
 
-const { getConfig } = require("./utils/configManager"); // 🔄 BEARBEITET (statt require("./Login.json"))
+const { getConfig } = require("./utils/configManager"); 
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -16,14 +24,13 @@ module.exports = {
 
   async execute(interaction) {
 
-    const config = getConfig(); // 🔄 BEARBEITET (Live-Config laden)
+    const config = getConfig(); 
 
     const executor = interaction.member;
 
-    const OwnerId = config.ownerUserId;       // 🔄 BEARBEITET
-    const adminRoleId = config.adminRoleId;   // 🔄 BEARBEITET
+    const OwnerId = config.ownerUserId;       
+    const adminRoleId = config.adminRoleId;   
 
-    // 🔄 BEARBEITET — Live Role Check + Owner Check
     if (interaction.user.id !== config.ownerUserId) {
 
       const hasOwnerId = executor.roles.cache.has(OwnerId);
@@ -48,9 +55,7 @@ module.exports = {
       });
     }
 
-    // ─────────────────────────────
     // Buttons
-    // ─────────────────────────────
 
         // FAQ
     const rules = new ActionRowBuilder().addComponents(
@@ -125,21 +130,13 @@ module.exports = {
 
     );
 
-    // ─────────────────────────────
     // Send panel ALWAYS into startChannel
-    // ─────────────────────────────
-
     await channel.send({
       content:
         "# Antihero – Help & FAQ Panel\n\n" +
         "Click one of the buttons below to get an answer.\n",
       components: [rules, row_faq, row_apple, row_creator, row_mod]
     });
-
-    // ─────────────────────────────
-    // Acknowledge command in the channel
-    // where /panel was executed
-    // ─────────────────────────────
 
     await interaction.reply({
       content: `FAQ panel has been sent to <#${config.startChannelId}>.`,

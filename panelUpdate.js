@@ -3,6 +3,9 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  EmbedBuilder,
+  StringSelectMenuBuilder,
+  StringSelectMenuOptionBuilder,
   PermissionFlagsBits
 } = require("discord.js");
 
@@ -15,157 +18,158 @@ module.exports = {
     .setDescription("Updates the FAQ panel"),
 
   async execute(interaction) {
-
     const config = getConfig();
-
     const executor = interaction.member;
-
     const OwnerId = config.ownerUserId;
-    const adminRoleId = config.adminRoleId;
 
-    // ─────────────────────────────
     // Permission check
-    // ─────────────────────────────
-
     if (interaction.user.id !== config.ownerUserId) {
-
       const hasOwnerId = executor.roles.cache.has(OwnerId);
-      const hasAdminRole = executor.roles.cache.has(adminRoleId);
 
       if (!hasOwnerId && !hasAdminRole) {
         return interaction.reply({
-          content: "❌ You are not allowed to execute this command.",
+          content: "You are not allowed to execute this command.",
           ephemeral: true
         });
       }
     }
 
-    // ─────────────────────────────
     // Channel fetch
-    // ─────────────────────────────
-
     const channel = await interaction.client.channels.fetch(
       config.startChannelId
     );
 
     if (!channel) {
       return interaction.reply({
-        content: "❌ Start channel not found.",
+        content: "Start channel not found.",
         ephemeral: true
       });
     }
 
-    // ─────────────────────────────
     // Buttons
-    // ─────────────────────────────
 
-    const rules = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("faq_rules")
-        .setLabel("Codex of Rules")
-        .setStyle(ButtonStyle.Secondary),
+    //NEW PANEL
+const supportEmbed = new EmbedBuilder()
+    .setColor(0x00A86B)
+    .setTitle("<:support:1520804207060586516> Antihero Support Center")
+    .setDescription(
+`### <:guilds:1526924370247815281> Discord Support
+• Rules and Roles
+• Reports & moderation
+• Server questions
+• Discord related issues
 
-      new ButtonBuilder()
-        .setCustomId("faq_roles")
-        .setLabel("Roles explained")
-        .setStyle(ButtonStyle.Secondary)
-    );
+### <:relic_icon:1526924375847211090> Game Support
+• Playtest access
+• Download & Update issues
+• Bugs & technical issues
+• Rewards & progression
 
-    const row_faq = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("faq_download")
-        .setLabel("How can I download the game?")
-        .setStyle(ButtonStyle.Primary),
+### <:goldenGoose:1520803955041636534> Creator support
+• Creator & Upload Rules
+• Requirements & Advantages
+• Creator Support
 
-      new ButtonBuilder()
-        .setCustomId("faq_country")
-        .setLabel("Not available in my country!")
-        .setStyle(ButtonStyle.Primary)
-    );
+### <:Tutle:1520804017192570880> Something Else
+Not sure where your issue belongs? - Select this option`
+    )
+    .setFooter({text: "Antihero Helper • Support Assistant"});
 
-    const row_bug = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("faq_bugs")
-        .setLabel("Report bugs / errors correctly")
-        .setStyle(ButtonStyle.Primary)
-    );
+const supportMenu = new ActionRowBuilder().addComponents(
+  new StringSelectMenuBuilder()
+    .setCustomId("support_category")
+    .setPlaceholder("Select a support category")
+    .addOptions(
+      new StringSelectMenuOptionBuilder()
+          .setLabel("Discord Support")
+          .setDescription("Moderation, reports and server questions")
+          .setEmoji("<:guilds:1526924370247815281>")
+          .setValue("discord"),
 
-    const row_creator = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("faq_creator_dashboard")
-        .setLabel("Creator dashboard & password")
-        .setStyle(ButtonStyle.Success),
+      new StringSelectMenuOptionBuilder()
+          .setLabel("Game Support")
+          .setDescription("Playtest, bugs, progress and gameplay")
+          .setEmoji("<:relic_icon:1526924375847211090>")
+          .setValue("game"),
 
-      new ButtonBuilder()
-        .setCustomId("faq_misfitz_content")
-        .setLabel("Create content")
-        .setStyle(ButtonStyle.Success)
-    );
+      new StringSelectMenuOptionBuilder()
+          .setLabel("Download & Update issues")
+          .setDescription("Google Play and Apple errors")
+          .setEmoji("<:RAM:1526924374429532230>")
+          .setValue("support_category_install"),
 
-    const row_mod = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("modmail_ticket")
-        .setLabel("Modmail")
-        .setStyle(ButtonStyle.Success),
+      new StringSelectMenuOptionBuilder()
+          .setLabel("Creator Support")
+          .setDescription("Content policy, creator role and more")
+          .setEmoji("<:goldenGoose:1520803955041636534>")
+          .setValue("creator"),
 
-      new ButtonBuilder()
-        .setCustomId("faq_nomail")
-        .setLabel("No access!")
-        .setStyle(ButtonStyle.Success),
-      
+      new StringSelectMenuOptionBuilder()
+          .setLabel("Something Else")
+          .setDescription("I'm not sure where my issue belongs")
+          .setEmoji("<:Tutle:1520804017192570880>")
+          .setValue("other"),
 
-    );
+      new StringSelectMenuOptionBuilder()
+          .setLabel("List all categories")
+          .setValue("list")
+  )
+);
 
-    // ─────────────────────────────
     // Fetch old panel
-    // ─────────────────────────────
-
     let message;
-
     try {
-
       message = await channel.messages.fetch(
         config.faqPanelMessageId
       );
 
     } catch (err) {
 
-      return interaction.reply({
-        content:
-          "❌ FAQ panel message not found.",
-        ephemeral: true
-      });
+    await channel.send({
+        content: 
+`## <:support:1520804207060586516> Antihero Support Center
+>>> ### <:guilds:1526924370247815281> Discord Support
+• Rules and Roles
+• Reports & moderation
+• Server questions
+• Discord related issues
+
+### <:relic_icon:1526924375847211090> Game Support
+• Playtest access
+• Download & Update issues
+• Bugs & technical issues
+• Rewards & progression
+
+### <:goldenGoose:1520803955041636534> Creator support
+• Creator & Upload Rules
+• Requirements & Advantages
+• Creator Support
+
+### <:Tutle:1520804017192570880> Something Else
+Not sure where your issue belongs? - Select this option`,
+        embeds: [],
+        components: [supportMenu]
+    });
     }
 
-    // ─────────────────────────────
     // Update panel
-    // ─────────────────────────────
-
     try {
-
       await message.edit({
-        content:
-          "# Antihero – Support\n\n" +
-          "Click one of the buttons below to help.",
-        components: [
-          rules,
-          row_bug,
-          row_mod
-        ]
+          content: null,
+          embeds: [supportEmbed],
+          components: [supportMenu]
       });
 
       await interaction.reply({
-        content: "✅ FAQ panel updated successfully.",
+        content: "FAQ panel updated successfully.",
         ephemeral: true
       });
 
     } catch (err) {
-
       console.error(err);
 
       await interaction.reply({
-        content:
-          "❌ Failed to update FAQ panel.",
+        content: "Failed to update FAQ panel.",
         ephemeral: true
       });
     }

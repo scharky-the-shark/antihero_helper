@@ -1,21 +1,24 @@
 const { REST, Routes } = require("discord.js");
 const config          = require("./Login.json");
 
-const panel           = require("./panel");
-const exportCmd       = require("./export");
-const ticketCloseCmd  = require("./ticketclose");
-const warnCmd         = require("./warn");
-const banCmd          = require("./ban");
-const timeoutCmd      = require("./timeout");
-const infoCmd         = require("./info");
-const configCmd       = require("./config");
+const banCommand          = require("./cmd/ban.js");
+const blockCommand        = require("./cmd/block");
+const clearuserCommand    = require("./cmd/clearuser");
+const clearStartCommand   = require("./cmd/clearStart");
+const configCommand       = require("./cmd/config");
+const forceCommand        = require("./cmd/force.js");
+const purgeCommand        = require("./cmd/purge");
+const quarantineCommand   = require("./cmd/quarantine");
+const resolveCommand      = require("./cmd/resolve.js");
+const setupCommand        = require("./cmd/setup");
+const softbanCommand      = require("./cmd/softban.js");
+const statsCommand        = require("./cmd/stats");
+const ticketCloseCommand  = require("./cmd/ticketclose");
+const timeoutCommand      = require("./cmd/timeout");
+const warnCommand         = require("./cmd/warn");
+const test         = require("./cmd/test");
 
-const quarantineCmd   = require("./quarantine");
-const purgeCmd        = require("./purge");
-const clearuserCmd    = require("./clearuser");
-const blockCmd        = require("./block");
-const resolveCmd      = require("./resolve");
-const statsCommand    = require("./stats");
+const panel           = require("./panelUpdate.js");
 
 const rest = new REST({ version: "10" }).setToken(config.token);
 
@@ -25,26 +28,29 @@ const rest = new REST({ version: "10" }).setToken(config.token);
     console.log("Registering slash commands...");
 
     await rest.put(
-      Routes.applicationGuildCommands(
-        config.clientId,
-        config.guildId
-      ),
-      {
+        Routes.applicationGuildCommands(
+            config.clientId,
+            config.guildId
+        ), {
         body: [
           panel.data.toJSON(),
-          exportCmd.data.toJSON(),
-          ticketCloseCmd.data.toJSON(),
-          warnCmd.data.toJSON(),
-          banCmd.data.toJSON(),
-          timeoutCmd.data.toJSON(),
-          infoCmd.data.toJSON(),
-          configCmd.data.toJSON(),
-          quarantineCmd.data.toJSON(),
-          purgeCmd.data.toJSON(),
-          clearuserCmd.data.toJSON(),
-          blockCmd.data.toJSON(),
-          resolveCmd.data.toJSON(),
+          ticketCloseCommand.data.toJSON(),
+          warnCommand.data.toJSON(),
+          banCommand.data.toJSON(),
+          timeoutCommand.data.toJSON(),
+          configCommand.data.toJSON(),
+          quarantineCommand.data.toJSON(),
+          purgeCommand.data.toJSON(),
+          clearuserCommand.data.toJSON(),
+          blockCommand.data.toJSON(),
+          resolveCommand.data.toJSON(),
           statsCommand.data.toJSON(),
+          softbanCommand.data.toJSON(),
+          forceCommand.data.toJSON(),
+          setupCommand.data.toJSON(),
+          
+          test.data.toJSON(),
+
         ]
       }
     );

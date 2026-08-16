@@ -1,102 +1,116 @@
+const { EmbedBuilder } = require("discord.js");
+
 module.exports = async (interaction) => {
 
   try {
-
-    if (!interaction.isButton()) return;
-
-    // FAQ
-    // NO MAIL
-    const noMail = require("./interactions/tickets/noMail");
-    const noMailYes = require("./interactions/tickets/noMailYes");
-    const noMailNo = require("./interactions/tickets/noMailNo");
-
-    // MODMAIL
-    const modmail = require("./interactions/tickets/modmail");
-    const modmailOpen = require("./interactions/tickets/modmailOpen");
-    const modmailCancel = require("./interactions/tickets/modmailCancel");
+    const handleMenus = require("./menuInteraction");
+    if (interaction.isStringSelectMenu()) {
+    await handleMenus(interaction);
+    return;
+    }
+    
+    // MODALERT
+    const modAlert        = require("./interactions/mods/alert");
+    const modVerify       = require("./interactions/mods/verify");
+    const modDismiss      = require("./interactions/mods/dismiss");
+    const modDelete       = require("./interactions/mods/delete");
 
     // COLLECTION
-    const collection = require("./interactions/tickets/collection");
-    const collectionOpen = require("./interactions/tickets/modmailCollectorOpen");
+    const collection      = require("./interactions/tickets/collection");
+    const collectionOpen  = require("./interactions/tickets/modmailCollectorOpen");
 
     // DELETE
-    const deleteTicket = require("./interactions/tickets/deleteTicket");
+    const deleteTicket    = require("./interactions/tickets/deleteTicket");
+    const ticketDelMenu   = require("./interactions/setup/delete_ticket")
+    // Support neu
+    const bugReport       = require("./support/game/bugReport");
+    const nomail          = require("./interactions/support/nomailRequest");
+    const Reveal          = require("./interactions/support/revealMail");
 
-    const faqRules = require("./interactions/faq/rules");
-    const faqRoles = require("./interactions/faq/roles");
+    // Start
+    const startNoMail     = require("./support/game/nomail");
+
+
+    if (interaction.customId.startsWith("mod_alert:")) {
+        return modAlert(interaction);
+    }
+
+    if (interaction.customId.startsWith("mod_verify:")) {
+        return modVerify(interaction);
+    }
+
+    if (interaction.customId.startsWith("mod_dismiss:")) {
+        return modDismiss(interaction);
+    }
+    if (interaction.customId.startsWith("ticket_delete:")) {
+        return ticketDelMenu(interaction);
+    }
     
-    const faqDownload = require("./interactions/faq/download");
-    const faqCountry = require("./interactions/faq/country");
-    const faqBugs = require("./interactions/faq/bugs");
-    const faqCreator = require("./interactions/faq/creatorDashboard");
-    const faqContent = require("./interactions/faq/createContent");
-
     switch (interaction.customId) {
+      case "mod_delete":
+        return modDelete(interaction);
 
-      case "faq_rules":
-        return faqRules(interaction);
+// Redirects
+      case "fill_nomail_ios":
+        return nomail(interaction);
 
-      case "faq_download":
-        return faqDownload(interaction);
+      case "fill_nomail_ios":
+        return nomail(interaction);
+      
+      case "fill_nomail_ios":
+        return nomail(interaction);
+    
+      case "fill_nomail_ios":
+        return nomail(interaction);
 
-      case "faq_country":
-        return faqCountry(interaction);
+// No Mail
+      case "fill_nomail_ios":
+        return nomail(interaction);
 
-      case "faq_bugs":
-        return faqBugs(interaction);
+      case "fill_nomail_android":
+        return nomail(interaction);
 
-      case "faq_creator_dashboard":
-        return faqCreator(interaction);
 
-      case "faq_misfitz_content":
-        return faqContent(interaction);
-
-      case "faq_roles":
-        return faqRoles(interaction);
-
-      case "faq_nomail":
-        return noMail(interaction);
-
-      case "nomail_yes":
-        return noMailYes(interaction);
-
-      case "nomail_no":
-        return noMailNo(interaction);
-
-      case "modmail_ticket":
-        return modmail(interaction);
-
+// Collector
       case "modmail_collection":
         return collection(interaction);
         
       case "modmail_collector":
         return collectionOpen(interaction);
 
-      case "modmail_ticket_open":
-        return modmailOpen(interaction);
-
-      case "modmail_ticket_cancel":
-        return modmailCancel(interaction);
-
       case "delete_ticket":
         return deleteTicket(interaction);
+
+// Support neu
+      case "fill_bugreport":
+        return bugReport(interaction);
+ 
+      case "reveal_nomail_email":
+        return Reveal(interaction);
+
+// START
+      case "start_nomail":
+        return startNoMail(interaction);
+
     }
-
   } catch (err) {
-
     console.error("INTERACTION ERROR:");
     console.error(err);
 
     try {
+    const ErrEmbed = new EmbedBuilder()
+        .setColor(0xff0000)
+        .setTitle("Unknown Error")
+        .setDescription(`<:hashtag:1520804246868463697> An error occurred.`)
+        .setFooter({ text: "AntiheroHelper" })
+        .setTimestamp();
 
       if (!interaction.replied && !interaction.deferred) {
-
         await interaction.reply({
-          content: "âŒ Interaction failed.",
+          embeds: [ErrEmbed],
           ephemeral: true
         });
       }
-
     } catch (e) {
 
       console.error("FAILED TO SEND ERROR REPLY:");
