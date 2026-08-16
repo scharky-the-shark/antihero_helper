@@ -76,8 +76,8 @@ if (guildBanInfo) {
         Date.now() -
         guildBanInfo.timestamp;
 
-    // 5 minutes
-    if (diff < 300000) {
+    // 15 minutes
+    if (diff < 900000) {
 
         score += 3;
 
@@ -205,14 +205,6 @@ Score: ${score}
 
     }
     catch (err) {
-
-        console.error(
-            "[ANTI-ALT ERROR]",
-            err
-        );
-
+        console.error("[ANTI-ALT ERROR]", err);
     }
-
-},
-    recentBans
-};
+}};

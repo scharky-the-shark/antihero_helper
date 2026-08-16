@@ -1,3 +1,4 @@
+const {EmbedBuilder} = require("discord.js");
 const automod = require("../utils/automod");
 const spamProtection = require("../utils/spamProtection");
 const memeModeration = require("../utils/memeModeration");
