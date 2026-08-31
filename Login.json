@@ -1,33 +1,27 @@
 {
-  "guildId": "***",
-  "clientId": "***",
-  "token": "***",
-
-  "ownerUserId": "1280882903567568922",
-  "allowedUserIds": [
-    "1444350799814594631",
-    "1423723349833420900"
-  ],
-
-  "export": {
-    "allowedRoleIds": [
-      "1444350799814594631",
-      "1423723349833420900"
-    ],
-    "cooldownHours": 12,
-    "googleDriveFolderId": "***"
-  },
-
+  "guildId":  "1296481397674082374",
+  "clientId": "1469339506942545981",
+  "token":    "",
+    
   "logging": {
     "channelIds": [
-      "1444004174445416498",
-      "1444353274336514139"
     ]
   },
 
-  "modRoleId":"1446246187383521390",
-  "adminRoleId":"1296482531734196254",
+  "version": "v5b",
+  "ownerUserId": "1280882903567568922",
+  
+  "modRoleId": "1374674313801629727",
+  "adminRoleId": "1296482531734196254",
+  "supportRoleId":"1472392473874665552",
+  "creatorRoleId": "1346459828138147860",
+  
+  "ticketCategoryId": "1473252581571825767",
+  "startChannelId": "1473267376437989386",
+  "faqPanelMessageId": "1477337786859126901",
+  "MOD_ALERT_CHANNEL": "1480664417044533268",
 
-  "ticketCategoryId": "1444353070711705790",
-  "startChannelId": "1444004174445416498"
+  "LOG_WEBHOOK": "",
+
+  "MisfitzAPI": "https://dashboard-antihero.duckdns.org",
 }
